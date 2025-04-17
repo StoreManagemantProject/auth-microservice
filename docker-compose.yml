@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"  
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    container_name: rabbitmq
+  
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    container_name: mongodb
+
+  authentication:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app  
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      PRIVATE_KEY: /app/src/main/resources/.private_key.pem
+      PUBLIC_KEY: /app/src/main/resources/.public_key.pem
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+      MONGO_URI: mongodb://mongodb:27017/users 
+    ports:
+      - "8080:8080"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    container_name: springboot-app
