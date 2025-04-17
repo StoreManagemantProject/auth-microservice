@@ -38,7 +38,7 @@ public class UserController{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Internal Server Error"));
         }
     }
-    @PostMapping("/store-owner/create")
+    @PostMapping("/store-manager/create")
     public ResponseEntity<?> postManager(@RequestBody StoreManagerModel storeOwner){
         try{
             UUID id = storeManagerService.create(storeOwner);

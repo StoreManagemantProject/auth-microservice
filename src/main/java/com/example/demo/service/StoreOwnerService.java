@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.model.StoreOwnerModel;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.StoreOwnerRepository;
+import com.example.demo.util.Authorization;
 
 @Service
 public class StoreOwnerService {
@@ -23,7 +24,8 @@ public class StoreOwnerService {
 
     public UUID create(StoreOwnerModel owner) throws IllegalArgumentException{
         validateStoreAdmin(owner);
-        owner.addRole(roleRepository.findByName("STORE_OWNER"));
+        owner.setPassword(Authorization.hashPassword(owner.getPassword()));
+        owner.setRoles(roleRepository.findByName("STORE_OWNER"));
         return storeOwnerRepository.save(owner).getId();
     }
     

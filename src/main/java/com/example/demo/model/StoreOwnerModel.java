@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
-import java.util.List;
 import java.util.UUID;
+
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -30,10 +30,6 @@ public class StoreOwnerModel {
     private Boolean status;
 
     @DBRef
-    private List<RoleModel> roles;
-
-    public void addRole(RoleModel role){
-        roles.add(role);
-    }
+    private RoleModel roles;
     
 }
