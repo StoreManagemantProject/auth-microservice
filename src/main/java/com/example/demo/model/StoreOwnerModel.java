@@ -13,10 +13,18 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Document(collection = "store-owner")
-public class StoreOwner {
+public class StoreOwnerModel {
     @Id
     private UUID id;
+
+    private String name;
+
     private String email;
+
     private String password;
+
+    private Boolean active;
+
+    private Boolean status;
 
 }
