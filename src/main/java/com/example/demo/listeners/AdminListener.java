@@ -3,12 +3,14 @@ package com.example.demo.listeners;
 import com.example.demo.model.AdminModel;
 import com.example.demo.service.AdminService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AdminListener {
 
-    private final AdminService adminService = new AdminService();
+    @Autowired
+    private  AdminService adminService;
 
 
 
