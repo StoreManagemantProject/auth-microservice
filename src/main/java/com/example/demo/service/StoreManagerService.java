@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.model.StoreManagerModel;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.StoreManagerRepository;
+import com.example.demo.util.Authorization;
 import com.example.demo.util.CPFValidator;
 
 @Service
@@ -26,6 +27,7 @@ public class StoreManagerService {
     public UUID create(StoreManagerModel manager){
         validateStoreManager(manager);
         manager.addRole(role.findByName("MANAGER"));
+        manager.setPassword(Authorization.hashPassword(manager.getPassword()));
         return repository.save(manager).getId();
     }
 
