@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.StoreManagerModel;
 import com.example.demo.model.StoreOwnerModel;
+import com.example.demo.service.StoreManagerService;
 import com.example.demo.service.StoreOwnerService;
 
 @RestController
@@ -19,12 +21,27 @@ import com.example.demo.service.StoreOwnerService;
 public class UserController{
     
     @Autowired
-    private StoreOwnerService service;
+    private StoreOwnerService storeOwnerService;
     
+    @Autowired
+    private StoreManagerService storeManagerService;
+
+
     @PostMapping("/store-owner/create")
-    public ResponseEntity<?> post(@RequestBody StoreOwnerModel storeOwner){
+    public ResponseEntity<?> postStoreOwner(@RequestBody StoreOwnerModel storeOwner){
         try{
-            UUID id = service.create(storeOwner);
+            UUID id = storeOwnerService.create(storeOwner);
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message","Store Owner created with successfully", "id", id));
+        }catch(IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Internal Server Error"));
+        }
+    }
+    @PostMapping("/store-owner/create")
+    public ResponseEntity<?> postManager(@RequestBody StoreManagerModel storeOwner){
+        try{
+            UUID id = storeManagerService.create(storeOwner);
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message","Store Owner created with successfully", "id", id));
         }catch(IllegalArgumentException e){
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
