@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.StoreManagerModel;
+import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.StoreManagerRepository;
 import com.example.demo.util.CPFValidator;
 
@@ -15,12 +16,16 @@ public class StoreManagerService {
     @Autowired
     private StoreManagerRepository repository;
 
+    @Autowired 
+    private RoleRepository role;
+    
     public StoreManagerModel findByEmail(String email){        
         return repository.findByEmail(email);
     }
 
     public UUID create(StoreManagerModel manager){
         validateStoreManager(manager);
+        manager.addRole(role.findByName("MANAGER"));
         return repository.save(manager).getId();
     }
 

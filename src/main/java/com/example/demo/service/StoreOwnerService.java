@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.StoreOwnerModel;
+import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.StoreOwnerRepository;
 
 @Service
@@ -13,12 +14,16 @@ public class StoreOwnerService {
     @Autowired
     private StoreOwnerRepository storeOwnerRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+    
     public StoreOwnerModel findByEmail(String email){
         return storeOwnerRepository.findByEmail(email);
     }
 
     public UUID create(StoreOwnerModel owner) throws IllegalArgumentException{
         validateStoreAdmin(owner);
+        owner.addRole(roleRepository.findByName("STORE_OWNER"));
         return storeOwnerRepository.save(owner).getId();
     }
     
