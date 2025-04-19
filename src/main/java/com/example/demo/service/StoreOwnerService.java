@@ -25,7 +25,7 @@ public class StoreOwnerService {
     public UUID create(StoreOwnerModel owner) throws IllegalArgumentException{
         validateStoreAdmin(owner);
         owner.setPassword(Authorization.hashPassword(owner.getPassword()));
-        owner.addRole(roleRepository.findByName("STORE_OWNER"));
+        owner.setRoles(roleRepository.findByName("STORE_OWNER"));
         return storeOwnerRepository.save(owner).getId();
     }
     
