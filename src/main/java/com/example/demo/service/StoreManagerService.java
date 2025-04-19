@@ -26,7 +26,7 @@ public class StoreManagerService {
 
     public UUID create(StoreManagerModel manager){
         validateStoreManager(manager);
-        manager.setRoles(role.findByName("MANAGER"));
+        manager.addRole(role.findByName("MANAGER"));
         manager.setPassword(Authorization.hashPassword(manager.getPassword()));
         return repository.save(manager).getId();
     }
