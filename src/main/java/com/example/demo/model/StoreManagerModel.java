@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
@@ -33,6 +34,10 @@ public class StoreManagerModel {
     private String cpf;
     
     @DBRef
-    private RoleModel roles;
+    private List<RoleModel> role;
+
+    public void addRole(RoleModel role) {
+        this.role.add(role);
+    }
 
 }

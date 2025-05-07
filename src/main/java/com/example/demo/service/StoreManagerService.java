@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.LoginDTO;
 import com.example.demo.model.StoreManagerModel;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.StoreManagerRepository;
@@ -26,7 +27,7 @@ public class StoreManagerService {
 
     public UUID create(StoreManagerModel manager){
         validateStoreManager(manager);
-        manager.setRoles(role.findByName("MANAGER"));
+        manager.addRole(role.findByName("MANAGER"));
         manager.setPassword(Authorization.hashPassword(manager.getPassword()));
         return repository.save(manager).getId();
     }
@@ -49,5 +50,16 @@ public class StoreManagerService {
             throw new IllegalArgumentException("Invalid Store Manager");
         }
 
+    }
+
+    public StoreManagerModel login(LoginDTO storeManager){
+        StoreManagerModel manager = repository.findByEmail(storeManager.getEmail());
+        if(manager == null){
+            throw new IllegalArgumentException("Invalid Store Manager");
+        }
+        if(!Authorization.checkPassword(storeManager.getPassword(), manager.getPassword())){
+            throw new IllegalArgumentException("Invalid Store Manager");
+        }
+        return manager;
     }
 }

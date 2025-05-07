@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -30,6 +31,9 @@ public class StoreOwnerModel {
     private Boolean status;
 
     @DBRef
-    private RoleModel roles;
+    private List<RoleModel> role;
     
+    public void addRole(RoleModel role) {
+        this.role.add(role);
+    }
 }

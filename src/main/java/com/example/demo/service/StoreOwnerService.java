@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.LoginDTO;
 import com.example.demo.model.StoreOwnerModel;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.StoreOwnerRepository;
@@ -25,7 +26,7 @@ public class StoreOwnerService {
     public UUID create(StoreOwnerModel owner) throws IllegalArgumentException{
         validateStoreAdmin(owner);
         owner.setPassword(Authorization.hashPassword(owner.getPassword()));
-        owner.setRoles(roleRepository.findByName("STORE_OWNER"));
+        owner.addRole(roleRepository.findByName("STORE_OWNER"));
         return storeOwnerRepository.save(owner).getId();
     }
     
@@ -44,5 +45,15 @@ public class StoreOwnerService {
             throw new IllegalArgumentException("Store Admin password is null or blank");
         }
 
+    }
+    public StoreOwnerModel login(LoginDTO storeOwner) throws IllegalArgumentException{
+        StoreOwnerModel storeOwnerEntity = storeOwnerRepository.findByEmail(storeOwner.getEmail());
+        if(storeOwnerEntity == null){
+            throw new IllegalArgumentException("Store Owner not found");
+        }
+        if(!Authorization.checkPassword(storeOwner.getPassword(), storeOwnerEntity.getPassword())){
+            throw new IllegalArgumentException("Invalid password");
+        }
+        return storeOwnerEntity;
     }
 }
