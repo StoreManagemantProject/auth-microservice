@@ -42,7 +42,7 @@ public class JwtTokenProvider {
             String token = JWT.create()
                     .withIssuer(issuer)
                     .withClaim("email", admin.getEmail())
-                    .withArrayClaim("roles", admin.getRoles().stream()
+                    .withArrayClaim("roles", admin.getRole().stream()
                             .map(RoleModel::getName).toArray(String[]::new))
                     .withClaim("type", "adminMaster-")
                     .withIssuedAt(new Date())

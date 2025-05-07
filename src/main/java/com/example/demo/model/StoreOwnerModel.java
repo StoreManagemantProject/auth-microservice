@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +32,7 @@ public class StoreOwnerModel {
     private Boolean status;
 
     @DBRef
-    private List<RoleModel> role;
+    private List<RoleModel> role = new ArrayList<>();
     
     public void addRole(RoleModel role) {
         this.role.add(role);

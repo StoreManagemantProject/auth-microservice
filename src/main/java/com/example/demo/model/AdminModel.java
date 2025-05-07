@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,5 +23,5 @@ public class AdminModel {
     private String password;
 
     @DBRef
-    private List<RoleModel> roles;
+    private List<RoleModel> role = new ArrayList<>();
 }
