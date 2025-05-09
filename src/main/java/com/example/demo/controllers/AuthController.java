@@ -36,7 +36,7 @@ public class AuthController{
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("/store-owner/create")
+    @PostMapping("/public/store-owner/create")
     public ResponseEntity<?> postStoreOwner(@RequestBody StoreOwnerModel storeOwner){
         try{
             UUID id = storeOwnerService.create(storeOwner);
@@ -47,7 +47,7 @@ public class AuthController{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Internal Server Error"));
         }
     }
-    @PostMapping("/store-manager/create")
+    @PostMapping("/private/store-manager/create")
     public ResponseEntity<?> postManager(@RequestBody StoreManagerModel storeOwner){
         try{
             UUID id = storeManagerService.create(storeOwner);
@@ -58,7 +58,7 @@ public class AuthController{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Internal Server Error"));
         }
     }
-    @PostMapping("/store-manager/login")
+    @PostMapping("/public/store-manager/login")
     public ResponseEntity<?> postManagerLogin(@RequestBody LoginDTO storeOwner){
         try{
             StoreManagerModel storeManager = storeManagerService.login(storeOwner);
@@ -72,7 +72,7 @@ public class AuthController{
         }
     }
 
-    @PostMapping("/store-owner/login")
+    @PostMapping("/public/store-owner/login")
     public ResponseEntity<?> postOwnerLogin(@RequestBody LoginDTO login){
         try{
             StoreOwnerModel storeOwner = storeOwnerService.login(login);
@@ -84,7 +84,7 @@ public class AuthController{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Internal Server Error"));
         }
     }
-    @PostMapping("admin/login")
+    @PostMapping("/public/admin/login")
     public ResponseEntity<?> postAdminLogin(@RequestBody LoginDTO login){
         try{
             AdminModel admin = adminService.login(login);
