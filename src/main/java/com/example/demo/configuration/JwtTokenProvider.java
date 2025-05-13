@@ -3,6 +3,7 @@ package com.example.demo.configuration;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.demo.model.AdminModel;
+import com.example.demo.model.EmployeeModel;
 import com.example.demo.model.RoleModel;
 import com.example.demo.model.StoreManagerModel;
 import com.example.demo.model.StoreOwnerModel;
@@ -113,5 +114,31 @@ public class JwtTokenProvider {
             throw e;
         }
     }
+    public String generateEmployeeToken(EmployeeModel employee) throws Exception {
+        logger.debug("Generating JWT for StoreAdminEntity with ID: {}", employee.getId());
+        try {
+            Algorithm algorithm = Algorithm.RSA256(
+                    (RSAPublicKey) Authorization.getPublicKey(publicKeyPath),
+                    (RSAPrivateKey) Authorization.getPrivateKey(privateKeyPath)
+            );
+            String token = JWT.create()
+                    .withIssuer(issuer)
+                    .withClaim("email", employee.getEmail())
+                    .withArrayClaim("roles", employee.getRole().stream()
+                            .map(RoleModel::getName).toArray(String[]::new))
+                    .withClaim("name", employee.getName())
+                    .withClaim("id", employee.getId().toString())
+                    .withClaim("type", "employee")
+                    .withIssuedAt(new Date())
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 8000 * 60 * 60))
+                    .sign(algorithm);
 
+            logger.debug("Jwt generated successfully for StoreAdminEntity.");
+
+            return token;
+        }catch (Exception e) {
+            logger.error("Error generating JWT for StoreAdminEntity", e);
+            throw e;
+        }
+    }
 }

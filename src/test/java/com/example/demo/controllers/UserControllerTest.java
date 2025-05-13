@@ -39,7 +39,7 @@ public class UserControllerTest {
 
 
     @InjectMocks
-    private AuthController userController;
+    private PublicAuth userController;
 
     @BeforeEach
     void setUp() {
@@ -65,24 +65,6 @@ public class UserControllerTest {
         verify(storeOwnerService, times(1)).create(owner);
     }
 
-    @Test
-    void testPostStoreManager_Success() {
-        StoreManagerModel manager = new StoreManagerModel();
-        manager.setName("Bob");
-        manager.setEmail("bob@example.com");
-        manager.setPassword("password");
-        manager.setCpf("12345678901");
-
-        UUID mockId = UUID.randomUUID();
-        when(storeManagerService.create(manager)).thenReturn(mockId);
-
-        ResponseEntity<?> response = userController.postManager(manager);
-
-        assertEquals(201, response.getStatusCode().value());
-        assertNotNull(response.getBody());
-        assertTrue(((Map<?, ?>) response.getBody()).containsKey("id"));
-        verify(storeManagerService, times(1)).create(manager);
-    }
 
     @Test
     void testPostStoreOwner_Invalid() {
@@ -96,17 +78,6 @@ public class UserControllerTest {
         assertTrue(((Map<?, ?>) response.getBody()).containsKey("error"));
     }
 
-    @Test
-    void testPostStoreManager_InternalError() {
-        StoreManagerModel manager = new StoreManagerModel();
-        when(storeManagerService.create(manager)).thenThrow(new RuntimeException());
-
-        ResponseEntity<?> response = userController.postManager(manager);
-
-        assertEquals(500, response.getStatusCode().value());
-        assertNotNull(response.getBody());
-        assertTrue(((Map<?, ?>) response.getBody()).containsKey("error"));
-    }
     @Test
     void testPostManagerLogin_Success() throws Exception {
         LoginDTO loginDTO = new LoginDTO("bob@example.com", "password");

@@ -23,6 +23,7 @@ public class RoleSeeder {
         seedRole("STORE_OWNER", "Store Owner role");
         seedRole("MANAGER", "Store manager role");
         seedRole("USER", "Basic user role");
+        seedRole("EMPLOYEE", "Employee role");
     }
 
     private void seedRole(String name, String description) {
