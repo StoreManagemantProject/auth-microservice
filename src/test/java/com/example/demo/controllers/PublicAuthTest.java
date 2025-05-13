@@ -23,7 +23,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.Map;
 import java.util.UUID;
 
-public class UserControllerTest {
+public class PublicAuthTest {
 
     @Mock
     private StoreOwnerService storeOwnerService;
